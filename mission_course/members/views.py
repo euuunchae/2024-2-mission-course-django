@@ -1,4 +1,5 @@
 from django.shortcuts import render
+<<<<<<< HEAD
 from members.models import Member
 
 # Create your views here.
@@ -12,3 +13,7 @@ def member_list(request):
     context = {'members' : members}
     return render(request, 'member_list.html', context)
 
+=======
+
+# Create your views here.
+>>>>>>> f04a13ea022b4250857879c6e19d9922c6002afc

@@ -4,6 +4,6 @@ from django.db import models
 
 class Member(models.Model):
     name = models.TextField()
-    email = models.TextField()
-    birth = models.DateTimeField()
-    join_date = models.DateTimeField()
+    email = models.TextField(unique=True)
+    birth = models.DateField(null=True)
+    join_date = models.DateField()

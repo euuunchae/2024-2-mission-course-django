@@ -16,6 +16,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+<<<<<<< HEAD
 from members import views
 
 urlpatterns = [
@@ -24,3 +25,9 @@ urlpatterns = [
     path('members/<int:member_id>/', views.member_detail),
 ]
 
+=======
+
+urlpatterns = [
+    path('admin/', admin.site.urls),
+]
+>>>>>>> f04a13ea022b4250857879c6e19d9922c6002afc
