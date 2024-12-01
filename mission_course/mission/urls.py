@@ -16,18 +16,12 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-<<<<<<< HEAD
 from members import views
+from django.urls import path, include
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('members/', views.member_list),
     path('members/<int:member_id>/', views.member_detail),
+    path('api/', include('rest_framework.urls')),
 ]
-
-=======
-
-urlpatterns = [
-    path('admin/', admin.site.urls),
-]
->>>>>>> f04a13ea022b4250857879c6e19d9922c6002afc
