@@ -23,7 +23,5 @@ urlpatterns = [
     path('api/members/', views.member_list, name = 'member_list'),
     path('api/members/<int:member_id>/', views.member_detail, name = 'member_detail'),
     path('api/members/create/', views.member_create, name = 'member_create'),
-    path('api/members/<int:member_id>/', views.member_update, name = 'member_update'),
-    path('api/members/<int:member_id>/', views.member_delete, name = 'member_delete'),
     path('api/', include('rest_framework.urls')),
 ]

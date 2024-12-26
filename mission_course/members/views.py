@@ -23,30 +23,35 @@ def member_create(request):
         return Response(serializer.data, status=200)
     return Response(serializer.errors, status=400)
    
-# 회원 상세 조회 !
-@api_view(['GET'])
+
+@api_view(['GET','PUT','DELETE'])
 def member_detail(request, member_id):
     member = Member.objects.get(id=member_id)
-    serializer = MemberSerializer(member)
-    return Response(serializer.data)
+
+    if request.method == 'GET': # 회원 상세 조회
+        serializer = MemberSerializer(member)
+        return Response(serializer.data)
+    
+    elif request.method == 'PUT': # 회원 정보 수정
+        serializer = MemberSerializer(member, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=200)
+        return Response(serializer.errors, status=400)
+
+    
+    elif request.method == 'DELETE': #회원 삭제
+        member.delete()
+        return Response(status=200)
 
 
-# 회원 정보 수정
 @api_view(['PUT'])
 def member_update(request, member_id):
     member = Member.objects.get(id=member_id)
-    serializer = MemberSerializer(member, data=request.data)
-    if serializer.is_valid():
-        serializer.save()
-        return Response(serializer.data, status=200)
-    return Response(serializer.errors, status=400)
     
 
-# 회원 삭제
-@api_view(['DELETE'])
-def member_delete(request, member_id):
-    member = Member.objects.get(id = member_id)
-    member.delete()
-    return Response(status=200)
+    
+
+
 
     
