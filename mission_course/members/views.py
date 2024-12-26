@@ -45,10 +45,6 @@ def member_detail(request, member_id):
         return Response(status=200)
 
 
-@api_view(['PUT'])
-def member_update(request, member_id):
-    member = Member.objects.get(id=member_id)
-    
 
     
 
