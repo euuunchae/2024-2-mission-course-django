@@ -1,7 +1,6 @@
 from .models import Member
-from django.shortcuts import render, redirect
+#from django.shortcuts import render, redirect
 #from django.http import JsonResponse
-from django.utils import timezone
 
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
@@ -20,13 +19,16 @@ def member_create(request):
     serializer = MemberSerializer(data = request.data)
     if serializer.is_valid():
         serializer.save()
-        return Response(serializer.data, status=200)
+        return Response(serializer.data, {"message" : "가입되었습니다."}, status=200)
     return Response(serializer.errors, status=400)
    
 
 @api_view(['GET','PUT','DELETE'])
 def member_detail(request, member_id):
-    member = Member.objects.get(id=member_id)
+    try:
+        member = Member.objects.get(id=member_id)
+    except Member.DoesNotExist:
+        return Response({"message" : "존재하지 않는 사용자입니다."}, status=404)
 
     if request.method == 'GET': # 회원 상세 조회
         serializer = MemberSerializer(member)
@@ -42,7 +44,7 @@ def member_detail(request, member_id):
     
     elif request.method == 'DELETE': #회원 삭제
         member.delete()
-        return Response(status=200)
+        return Response({"message" : "삭제되었습니다." }, status=200)
 
 
 
