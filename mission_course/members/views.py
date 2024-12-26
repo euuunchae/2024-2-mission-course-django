@@ -15,7 +15,7 @@ def member_list(request):
     serializer = MemberSerializer(members, many=True)
     return Response(serializer.data)
 
-# 회원 상세 조회
+# 회원 상세 조회 !
 @api_view(['GET'])
 def member_detail(request, member_id):
     member = Member.objects.get(id=member_id)
