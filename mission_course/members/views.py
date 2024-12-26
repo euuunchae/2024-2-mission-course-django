@@ -1,4 +1,3 @@
-from django.shortcuts import render
 from .models import Member
 from django.shortcuts import render, redirect
 #from django.http import JsonResponse
@@ -15,13 +14,6 @@ def member_list(request):
     serializer = MemberSerializer(members, many=True)
     return Response(serializer.data)
 
-# 회원 상세 조회 !
-@api_view(['GET'])
-def member_detail(request, member_id):
-    member = Member.objects.get(id=member_id)
-    serializer = MemberSerializer(member)
-    return Response(serializer.data)
-
 # 회원 가입
 @api_view(['POST'])
 def member_create(request):
@@ -31,20 +23,30 @@ def member_create(request):
         return Response(serializer.data, status=200)
     return Response(serializer.errors, status=400)
    
-# 회원 정보 수정
-@api_view(['PATCH'])
-def member_update(request, member_id):
-    member = Member.objects.get(id = member_id)
-    if request.method == 'PATCH':
-        name = request.data.get('name', '').strip(),
-        email = request.PATCH['email'],
+# 회원 상세 조회 !
+@api_view(['GET'])
+def member_detail(request, member_id):
+    member = Member.objects.get(id=member_id)
+    serializer = MemberSerializer(member)
+    return Response(serializer.data)
 
+
+# 회원 정보 수정
+@api_view(['PUT'])
+def member_update(request, member_id):
+    member = Member.objects.get(id=member_id)
+    serializer = MemberSerializer(member, data=request.data)
+    if serializer.is_valid():
+        serializer.save()
+        return Response(serializer.data, status=200)
+    return Response(serializer.errors, status=400)
+    
 
 # 회원 삭제
 @api_view(['DELETE'])
 def member_delete(request, member_id):
     member = Member.objects.get(id = member_id)
     member.delete()
-    return redirect('/members')
+    return Response(status=200)
 
     
