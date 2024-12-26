@@ -1,19 +1,50 @@
 from django.shortcuts import render
-<<<<<<< HEAD
-from members.models import Member
+from .models import Member
+from django.shortcuts import render, redirect
+#from django.http import JsonResponse
+from django.utils import timezone
 
-# Create your views here.
-def member_detail(request, member_id):
-    member = Member.objects.get(id=member_id)
-    context = {'member' : member}
-    return render(request, 'question_detail.html', context)
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
+from .serializers import MemberSerializer
 
+# 회원 전체 목록 조회
+@api_view(['GET'])
 def member_list(request):
     members = Member.objects.all()
-    context = {'members' : members}
-    return render(request, 'member_list.html', context)
+    serializer = MemberSerializer(members, many=True)
+    return Response(serializer.data)
 
-=======
+# 회원 상세 조회
+@api_view(['GET'])
+def member_detail(request, member_id):
+    member = Member.objects.get(id=member_id)
+    serializer = MemberSerializer(member)
+    return Response(serializer.data)
 
-# Create your views here.
->>>>>>> f04a13ea022b4250857879c6e19d9922c6002afc
+# 회원 가입
+@api_view(['POST'])
+def member_create(request):
+    serializer = MemberSerializer(data = request.data)
+    if serializer.is_valid():
+        serializer.save()
+        return Response(serializer.data, status=200)
+    return Response(serializer.errors, status=400)
+   
+# 회원 정보 수정
+@api_view(['PATCH'])
+def member_update(request, member_id):
+    member = Member.objects.get(id = member_id)
+    if request.method == 'PATCH':
+        name = request.data.get('name', '').strip(),
+        email = request.PATCH['email'],
+
+
+# 회원 삭제
+@api_view(['DELETE'])
+def member_delete(request, member_id):
+    member = Member.objects.get(id = member_id)
+    member.delete()
+    return redirect('/members')
+
+    
