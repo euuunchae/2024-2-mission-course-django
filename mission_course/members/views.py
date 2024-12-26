@@ -5,12 +5,13 @@ from .models import Member
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from .serializers import MemberSerializer
+from .serializers import MemberListSerializer
 
 # 회원 전체 목록 조회
 @api_view(['GET'])
 def member_list(request):
     members = Member.objects.all()
-    serializer = MemberSerializer(members, many=True)
+    serializer = MemberListSerializer(members, many=True)
     return Response(serializer.data)
 
 # 회원 가입
@@ -19,7 +20,7 @@ def member_create(request):
     serializer = MemberSerializer(data = request.data)
     if serializer.is_valid():
         serializer.save()
-        return Response(serializer.data, {"message" : "가입되었습니다."}, status=200)
+        return Response({"data" : serializer.data, "message" : "가입되었습니다."}, status=200)
     return Response(serializer.errors, status=400)
    
 
